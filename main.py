@@ -16,9 +16,9 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
+        player.draw(screen)
         pygame.display.flip()
         pygame.time.Clock().tick(60)
-        player.draw(screen)
         dt = pygame.time.Clock().tick()/1000 # Convert milliseconds to seconds
 
 if __name__ == "__main__":
