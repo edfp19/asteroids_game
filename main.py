@@ -1,5 +1,6 @@
 #this is the initial commit from local laptop
 import pygame
+import sys
 
 #game constants
 from constants import *
@@ -22,10 +23,10 @@ def main():
     y = SCREEN_HEIGHT / 2
 # initialize clock
     clock = pygame.time.Clock()
-"""
-This creates pygame groups. This basically groups several objects that share some characteristics. 
-For example, updatable takes Player, Asteroid, AsteroidFields 
-"""
+    """
+    This creates pygame groups. This basically groups several objects that share some characteristics. 
+    For example, updatable takes Player, Asteroid, AsteroidFields 
+    """
     updatable = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -44,6 +45,11 @@ For example, updatable takes Player, Asteroid, AsteroidFields
         # use the updatable group and run the update method described in player, asteroid etc
         updatable.update(dt)
         #loop through every drawable and draw their members on screen
+        #Checks for collisions 
+        for asteroid in asteroids:
+            if asteroid.check_collision(player): 
+                print("GAME OVER!")
+                sys.exit()
         for drawable in drawables:
             drawable.draw(screen)
         """
@@ -51,6 +57,7 @@ For example, updatable takes Player, Asteroid, AsteroidFields
         60 FPS divided by 1000 coverts it into miliseconds 
         I don't really know the reason behind this, gotta get into it
         """
+
         dt = clock.tick(60)/1000 # Convert milliseconds to seconds
         #flips the screen. Also don't know why
         pygame.display.flip()
