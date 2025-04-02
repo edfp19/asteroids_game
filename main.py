@@ -10,6 +10,8 @@ from player import Player
 from asteroids import Asteroid
 #this creates the asteroid field
 from asteroidfield import * 
+# this takes the shot class
+from shot import *
 
 #iniatilize main function
 def main():
@@ -30,6 +32,8 @@ def main():
     updatable = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
+    Shot.containers = (updatable, drawables, shots)
     Player.containers = (updatable, drawables)
     Asteroid.containers = (asteroids, updatable, drawables)
     AsteroidField.containers = updatable
@@ -44,14 +48,22 @@ def main():
         screen.fill("black")
         # use the updatable group and run the update method described in player, asteroid etc
         updatable.update(dt)
+        player.update_timer(dt)
         #loop through every drawable and draw their members on screen
         #Checks for collisions 
         for asteroid in asteroids:
             if asteroid.check_collision(player): 
                 print("GAME OVER!")
                 sys.exit()
+            for bullet in shots: 
+                if bullet.check_collision(asteroid): 
+                    asteroid.kill()
+                    bullet.kill()
         for drawable in drawables:
             drawable.draw(screen)
+        # call the shots 
+
+        
         """
         update dt. That's just a delta of time that we use as a parameter for the object to move and things to refresh
         60 FPS divided by 1000 coverts it into miliseconds 
